@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 
@@ -32,6 +33,24 @@ public class Main {
             }
         }
 
+        System.out.println("\nВведите посещаемость студентов:");
+        System.out.println("Формат: имя 14:00 2020-09-15 ЗДЕСЬ/НЕ_ЗДЕСЬ");
+        System.out.println("Пустая строка — конец.");
+        while (true) {
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) break;
+            try {
+                String[] parts = input.split(" ");
+                String name = parts[0];
+                LocalTime time = LocalTime.parse(parts[1]);
+                LocalDate date = LocalDate.parse(parts[2]);
+                AttendanceStatus status = AttendanceStatus.valueOf(parts[3].toUpperCase());
+                scheduler.addAttendance(name, date, time, status);
+            } catch (Exception e) {
+                System.out.println("Неверный формат.");
+            }
+        }
 
+        scheduler.showSchedule();
     }
 }
